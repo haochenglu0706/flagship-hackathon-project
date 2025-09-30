@@ -5,10 +5,9 @@
 }
 
 :root {
-  --primary-color: #f1faee; /* Hexadecimal color */
-  --secondary-color: #457b9d; /* RGB color */
-  --accent-color: #a8dadc; /* HSL color */
-  /* --text-color: black; */
+  --primary-color: #f1faee;
+  --secondary-color: #457b9d;
+  --accent-color: #a8dadc;
 }
 
 body{

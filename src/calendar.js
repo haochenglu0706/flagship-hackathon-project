@@ -1,0 +1,21 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        views: {
+            timeGridWeek: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+            },
+            timeGridDay: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+            }
+        }
+    });
+    calendar.render();
+});
