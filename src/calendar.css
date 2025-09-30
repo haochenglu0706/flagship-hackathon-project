@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fira+Code:wght@300..700&display=swap');
+
+:root {
+  --primary-color: #f1faee;
+  --secondary-color: #457b9d;
+  --accent-color: #a8dadc;
+}
+
+* {
+    font-family: "Fira Code", monospace;
+  
+}   
+
+.fc .fc-button-primary{
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active{
+    background-color: var(--accent-color);
+}
+
+#calendar .fc-view-harness{
+    width: 65%;
+    margin: auto;
+}
+
+#calendar{
+    color: var(--secondary-color);
+}
+
