@@ -20,13 +20,8 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(express.static('public'));
 
 // Routes
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
 app.get('/calendar', (req, res) => {
-  res.sendFile(path.join(__dirname, 'calendar.html'));
+  res.sendFile(path.join(__dirname, 'public', 'calendar.html'));
 })
 
 // API routes (centralized)
