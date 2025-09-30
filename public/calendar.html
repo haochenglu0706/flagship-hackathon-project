@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.19/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.19/index.global.min.js'></script>
+    <link rel="stylesheet" href="calendar.css">
+    <script src="calendar.js" defer></script>
+    <title>Flagship Hackathon Project</title>
+  </head>
+  <body>
+    <form id="course-search" style="margin: 8px 0;">
+      <input id="course-code" type="text" placeholder="e.g. COMP1511" aria-label="Course code" />
+      <button type="submit">Load classes</button>
+    </form>
+    <div id="calendar"></div>
+  </body>
+</html>
