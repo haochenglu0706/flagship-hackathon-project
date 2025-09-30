@@ -21,7 +21,7 @@ const query = `
       status
       year
       course { course_code }
-      times { weeks location time }
+      times { weeks location time day}
     }
   }
 `;
