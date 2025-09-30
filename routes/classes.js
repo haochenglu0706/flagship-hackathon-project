@@ -20,6 +20,7 @@ const query = `
       mode
       status
       year
+      activity
       course { course_code }
       times { weeks location time }
     }
