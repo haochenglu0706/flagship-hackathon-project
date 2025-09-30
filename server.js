@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import apiRouter from './routes/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 // the folder where server.js is located
@@ -27,6 +28,9 @@ app.get('/', (req, res) => {
 app.get('/calendar', (req, res) => {
   res.sendFile(path.join(__dirname, 'calendar.html'));
 })
+
+// API routes (centralized)
+app.use('/api', apiRouter);
 
 
 // 404 handler
