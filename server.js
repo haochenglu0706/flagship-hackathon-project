@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 // Middleware
 app.use(morgan('combined')); // Logging middleware
@@ -19,15 +19,9 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(express.static('public'));
 
 // Routes
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
 app.get('/calendar', (req, res) => {
-  res.sendFile(path.join(__dirname, 'calendar.html'));
+  res.sendFile(path.join(__dirname, 'public', 'calendar.html'));
 })
-
 
 // 404 handler
 app.use((req, res) => {
