@@ -22,7 +22,7 @@ const query = `
       year
       activity
       course { course_code }
-      times { weeks location time }
+      times { weeks location time day}
     }
   }
 `;

@@ -43,6 +43,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+
+    calendar.addEvent({
+        title: 'Event from app.js',
+        start: '2025-09-29T12:30:00-05:00',
+        end: '2025-09-29T12:30:00-03:00'
+    });
+
     calendar.render();
 });
 
