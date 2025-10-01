@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (props.classType === 'Lecture') {
                 shortClassType = 'Lec';
             } else if (props.classType === 'Tutorial-Laboratory') {
-                shortClassType = 'tut-lab';
+                shortClassType = 'Tut-Lab';
             } else if (props.classType === 'Tutorial') {
-                shortClassType = 'tut';
+                shortClassType = 'Tut';
             } else {
                 shortClassType = props.classType;
             }
@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             else {
                 return {
                     html: `
+                    <a  href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}">
                       <div class="fc-event-content">
                         <div class="event-header">
                           <span class="type-icon">${typeIcon}</span>
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         <div class="event-details">
                           <div class="detail-row">
                             <span class="detail-label">📍</span>
-                            <span class="detail-value location" href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}">${shortLocation}</span>
+                            <span class="detail-value location">${shortLocation}</span>
                           </div>
                           <div class="detail-row">
                             <span class="detail-label">●</span>
@@ -147,13 +148,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                           </div>
                         </div>
                       </div>
+                    </a>
                     `
                   };
             }
           },
         // navigate by single days
         headerToolbar: {
-            left: 'prevDay,nextDay today',
+            left: 'prevDay,nextDay',
             center: '',
             right: 'timeGridWeek,timeGridDay'
         },

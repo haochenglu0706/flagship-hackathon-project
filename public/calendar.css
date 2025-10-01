@@ -143,14 +143,14 @@ body {
 }
 
 .detail-label {
-  font-size: 11px;
+  font-size: 12px;
   margin-right: 4px;
   min-width: 16px;
 }
 
 .detail-value {
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   text-align: right;
   flex: 1;
 }
@@ -209,6 +209,12 @@ body {
   background-color: var(--accent-color) !important;
 }
 
-/* .fc-day-today {
-  background-color: inherit !important;
-} */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.fc-event {
+  border: none !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;  
+}
