@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         weekends: false,
         eventMaxStack: 3,
         slotEventOverlap: false,
+        initialDate: '2025-09-29',
 
         eventContent: function(arg) {
             let props = arg.event.extendedProps;
@@ -110,16 +111,21 @@ document.addEventListener('DOMContentLoaded', async function () {
             prevDay: {
                 text: 'Prev',
                 click: function () {
-                    let temp = calendar
-                    calendar.incrementDate({ days: -1 });
-                    console.log(calendar === temp)
-
+                    if (String(calendar.getDate()).split(' ')[0] == "Mon") {
+                        calendar.incrementDate({ days: -3 });
+                    } else {
+                        calendar.incrementDate({ days: -1 });
+                    }
                 }
             },
             nextDay: {
                 text: 'Next',
                 click: function () {
-                    calendar.incrementDate({ days: 1 });
+                    if (String(calendar.getDate()).split(' ')[0] == "Fri") {
+                        calendar.incrementDate({ days: 3 });
+                    } else {
+                        calendar.incrementDate({ days: 1 });
+                    }
                 }
             }
         },
@@ -132,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         dateClick: function (info) {
             selectedDate = info.date;
             updateHighlight(selectedDate);
+            calendar.gotoDate(selectedDate);
         },
         dayHeaderFormat: { weekday: 'long' },
         views: {
