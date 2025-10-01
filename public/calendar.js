@@ -3,6 +3,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     var selectedDate = null;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
+
+        eventContent: function(arg) {
+            // arg.event gives you the event object
+            let location = arg.event.extendedProps.location;
+            let classType = arg.event.extendedProps.classType;
+        
+            return {
+              html: `
+                <div>
+                  <b>${arg.event.title}</b><br>
+                  <i>${classType}</i><br>
+                  <span>${location}</span>
+                </div>
+              `
+            };
+          },
         // navigate by single days
         headerToolbar: {
             left: 'prevDay,nextDay today',
@@ -63,9 +79,11 @@ document.addEventListener('DOMContentLoaded', async function () {
                     title: classItem.class_id,
                     startTime: time.time.split(' - ')[0],
                     endTime: time.time.split(' - ')[1],
-                    location: time.location,
-                    classType: classItem.activity,
                     daysOfWeek: [dayToNumber(time.day)],
+                    extendedProps: {
+                        location: time.location,
+                        classType: classItem.activity,
+                    }
                 });
             })
         } else {
@@ -82,13 +100,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 title: classItem.class_id,
                 startTime: startTime,
                 endTime: endTime,
-                location: classItem.times[0].location,
-                classType: classItem.activity,
-                status: classItem.status,
-                capacity: classItem.course_enrolment,
                 daysOfWeek: [dayToNumber(classItem.times[0].day)],
-                weeks: classItem.times[0].weeks,
-                mode: classItem.mode
+                extendedProps: {
+                    location: classItem.times[0].location,
+                    classType: classItem.activity,
+                    status: classItem.status,
+                    capacity: classItem.course_enrolment,
+                    weeks: classItem.times[0].weeks,
+                    mode: classItem.mode
+                }
             });
         }
         
