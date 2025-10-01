@@ -29,6 +29,12 @@ let input = document.getElementsByClassName("searchInput")[0]
 input.onfocus = function(){
   input.value = ''
   input.style.color = 'var(--primary-color)'
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      btn.click();
+    }
+  });
 }
 
 btn.onclick = function(){
