@@ -26,6 +26,8 @@
 let btn = document.getElementsByClassName("searchButton")[0]
 let input = document.getElementsByClassName("searchInput")[0]
 
+
+
 input.onfocus = function(){
   input.value = ''
   input.style.color = 'var(--primary-color)'
@@ -38,9 +40,10 @@ input.onfocus = function(){
 }
 
 btn.onclick = function(){
-  if(input.value == ''){
+  let pattern = /[A-Za-z]{4}[0-9]{4}$/
+  if(!input.value.match(pattern)){
     // alert("Can't find the course!")
-    input.value = "Can't find the course!";
+    input.value = "Not a valid course!";
     input.style.color = "#ff7878ff";
     return;
   }
