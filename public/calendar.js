@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         dateClick: function (info) {
             selectedDate = info.date;
             updateHighlight(selectedDate);
+            calendar.gotoDate(selectedDate);
         },
         dayHeaderFormat: { weekday: 'long' },
         views: {
