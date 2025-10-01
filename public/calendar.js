@@ -31,18 +31,26 @@ document.addEventListener('DOMContentLoaded', async function () {
         initialView: 'timeGridWeek',
         slotMinTime: '08:00:00',
         weekends: false,
+        eventMaxStack: 3,
+        slotEventOverlap: false,
 
         eventContent: function(arg) {
-            // arg.event gives you the event object
+            // arg.event gives you the event objec
+            let props = arg.event.extendedProps;
             let location = arg.event.extendedProps.location;
             let classType = arg.event.extendedProps.classType;
         
             return {
               html: `
                 <div>
-                  <b>${arg.event.title}</b><br>
-                  <i>${classType}</i><br>
-                  <span>${location}</span>
+                <b>${arg.event.title}</b><br>
+                <span>${props.classType}</span><br>
+                <span>${props.location}</span><br>
+                <span>Status: ${props.status}</span><br>
+                <span>Capacity: ${props.capacity}</span><br>
+                <span>Weeks: ${props.weeks}</span><br>
+                <span>Mode: ${props.mode}</span><br>
+                <span>Time: ${props.time}</span>
                 </div>
               `
             };
@@ -104,13 +112,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (classItem.activity === "Lecture") {
             classItem.times.forEach(time => {
                 calendar.addEvent({
-                    title: classItem.class_id,
+                    title: classItem.section,
                     startTime: time.time.split(' - ')[0],
                     endTime: time.time.split(' - ')[1],
                     daysOfWeek: [dayToNumber(time.day)],
                     extendedProps: {
                         location: time.location,
                         classType: classItem.activity,
+                        time: time.time,
+                        status: classItem.status,
+                        capacity: classItem.course_enrolment,
+                        weeks: time.weeks,
+                        mode: classItem.mode
                     }
                 });
             })
@@ -125,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             calendar.addEvent({
-                title: classItem.class_id,
+                title: classItem.section,
                 startTime: startTime,
                 endTime: endTime,
                 daysOfWeek: [dayToNumber(classItem.times[0].day)],
@@ -135,7 +148,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     status: classItem.status,
                     capacity: classItem.course_enrolment,
                     weeks: classItem.times[0].weeks,
-                    mode: classItem.mode
+                    mode: classItem.mode,
+                    time: classItem.times[0].time
                 }
             });
         }
