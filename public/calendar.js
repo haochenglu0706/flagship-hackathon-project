@@ -29,6 +29,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     var selectedDate = null;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
+
+        eventContent: function(arg) {
+            // arg.event gives you the event object
+            let location = arg.event.extendedProps.location;
+            let classType = arg.event.extendedProps.classType;
+        
+            return {
+              html: `
+                <div>
+                  <b>${arg.event.title}</b><br>
+                  <i>${classType}</i><br>
+                  <span>${location}</span>
+                </div>
+              `
+            };
+          },
         // navigate by single days
         headerToolbar: {
             left: 'prevDay,nextDay today',
@@ -83,6 +99,20 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Add events for each class and each time slot
     classes.forEach(classItem => {
             // Determine start and end times based on the logic you wanted
+        if (classItem.activity === "Lecture") {
+            classItem.times.forEach(time => {
+                calendar.addEvent({
+                    title: classItem.class_id,
+                    startTime: time.time.split(' - ')[0],
+                    endTime: time.time.split(' - ')[1],
+                    daysOfWeek: [dayToNumber(time.day)],
+                    extendedProps: {
+                        location: time.location,
+                        classType: classItem.activity,
+                    }
+                });
+            })
+        } else {
             let startTime, endTime;
             if ((classItem.times.length > 1) && (classItem.activity !== "Lecture")) {
                 startTime = classItem.times[0].time.split(' - ')[0];
@@ -96,15 +126,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                 title: classItem.class_id,
                 startTime: startTime,
                 endTime: endTime,
-                location: classItem.times[0].location,
-                classType: classItem.activity,
-                status: classItem.status,
-                capacity: classItem.course_enrolment,
                 daysOfWeek: [dayToNumber(classItem.times[0].day)],
-                weeks: classItem.times[0].weeks,
-                mode: classItem.mode
+                extendedProps: {
+                    location: classItem.times[0].location,
+                    classType: classItem.activity,
+                    status: classItem.status,
+                    capacity: classItem.course_enrolment,
+                    weeks: classItem.times[0].weeks,
+                    mode: classItem.mode
+                }
             });
-        ;
+        }
+        
     });
     calendar.render();
     
@@ -129,19 +162,19 @@ function toYmd(date) {
 
 function dayToNumber(day) {
     switch (day) {
-        case 'Mon':
+        case "Mon":
             return 1;
-        case 'Tue':
+        case "Tue":
             return 2;
-        case 'Wed':
+        case "Wed":
             return 3;
-        case 'Thu':
+        case "Thu":
             return 4;
-        case 'Fri':
+        case "Fri":
             return 5;
-        case 'Sat':
+        case "Sat":
             return 6;
-        case 'Sun':
+        case "Sun":
             return 0;
         default:
             return 0;
