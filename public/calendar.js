@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Determine start and end times based on the logic you wanted
         let colour;
         let ratio = eval(classItem.course_enrolment);
-        console.log(ratio === 1)
 
 
         if (ratio === 1) {
