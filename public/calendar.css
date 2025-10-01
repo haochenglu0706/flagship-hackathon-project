@@ -199,3 +199,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Change pop-up background */
+.fc-popover-body {
+  background-color: var(--primary-color);
+}
+
+.fc-popover-header {
+  background-color: var(--accent-color) !important;
+}
