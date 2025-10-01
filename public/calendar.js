@@ -57,6 +57,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Add events for each class and each time slot
     classes.forEach(classItem => {
             // Determine start and end times based on the logic you wanted
+        if (classItem.activity === "Lecture") {
+            classItem.times.forEach(time => {
+                calendar.addEvent({
+                    title: classItem.class_id,
+                    startTime: time.time.split(' - ')[0],
+                    endTime: time.time.split(' - ')[1],
+                    location: time.location,
+                    classType: classItem.activity,
+                    daysOfWeek: [dayToNumber(time.day)],
+                });
+            })
+        } else {
             let startTime, endTime;
             if ((classItem.times.length > 1) && (classItem.activity !== "Lecture")) {
                 startTime = classItem.times[0].time.split(' - ')[0];
@@ -78,7 +90,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 weeks: classItem.times[0].weeks,
                 mode: classItem.mode
             });
-        ;
+        }
+        
     });
     calendar.render();
     
@@ -103,19 +116,19 @@ function toYmd(date) {
 
 function dayToNumber(day) {
     switch (day) {
-        case 'Mon':
+        case "Mon":
             return 1;
-        case 'Tue':
+        case "Tue":
             return 2;
-        case 'Wed':
+        case "Wed":
             return 3;
-        case 'Thu':
+        case "Thu":
             return 4;
-        case 'Fri':
+        case "Fri":
             return 5;
-        case 'Sat':
+        case "Sat":
             return 6;
-        case 'Sun':
+        case "Sun":
             return 0;
         default:
             return 0;
