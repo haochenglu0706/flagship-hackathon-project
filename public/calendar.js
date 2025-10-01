@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Simplify class type names
             let shortClassType = '';
             if (props.classType === 'Lecture') {
-                shortClassType = 'lec';
+                shortClassType = 'Lec';
             } else if (props.classType === 'Tutorial-Laboratory') {
                 shortClassType = 'tut-lab';
             } else if (props.classType === 'Tutorial') {
@@ -143,10 +143,40 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const classesData = await loadClasses();
     const classes = classesData.classes;
+
+    // output  = []
+
+    // for (let i = 0; i < classes.length; i ++) {
+    //     if (classes[i].status === 'Open' ) {
+    //         new_output =  output.splice(0, classes[i])
+    //         output = new_output
+    //     }
+    //     else {
+    //         output.push(classes[i])
+    // //     }
+    // // }
+
+    // console.log(output)
+
     
     // Add events for each class and each time slot
     classes.forEach(classItem => {
-            // Determine start and end times based on the logic you wanted
+        // Determine start and end times based on the logic you wanted
+        let colour;
+        let ratio = eval(classItem.course_enrolment);
+        console.log(ratio === 1)
+
+
+        if (ratio === 1) {
+            colour =  '#F72D2D' // red
+        }
+        else if (ratio >= 0.80 && ratio < 1) {
+            colour = '#F59C27' // orange
+        }
+        else {
+            colour = '#3987d8' // blue
+        }
+
         if (classItem.activity === "Lecture") {
             classItem.times.forEach(time => {
                 calendar.addEvent({
@@ -154,6 +184,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     startTime: time.time.split(' - ')[0],
                     endTime: time.time.split(' - ')[1],
                     daysOfWeek: [dayToNumber(time.day)],
+                    backgroundColor: colour,
                     extendedProps: {
                         location: time.location,
                         classType: classItem.activity,
@@ -180,6 +211,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 startTime: startTime,
                 endTime: endTime,
                 daysOfWeek: [dayToNumber(classItem.times[0].day)],
+                backgroundColor: colour,
                 extendedProps: {
                     location: classItem.times[0].location,
                     classType: classItem.activity,
