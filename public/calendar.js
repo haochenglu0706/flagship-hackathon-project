@@ -29,18 +29,73 @@ document.addEventListener('DOMContentLoaded', async function () {
     var selectedDate = null;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
+        slotMinTime: '08:00:00',
+        weekends: false,
+        eventMaxStack: 3,
+        slotEventOverlap: false,
 
         eventContent: function(arg) {
-            // arg.event gives you the event object
-            let location = arg.event.extendedProps.location;
-            let classType = arg.event.extendedProps.classType;
-        
+            let props = arg.event.extendedProps;
+            let statusColor = props.status === 'Open' ? '#4ade80' : '#f87171';
+            let modeIcon = props.mode === 'Online' ? '🌐' : '🏫';
+            let typeIcon = props.classType === 'Lecture' ? '📚' : props.classType === 'Tutorial' ? '👥' : '🔬';
+            
+            // Simplify class type names
+            let shortClassType = '';
+            if (props.classType === 'Lecture') {
+                shortClassType = 'lec';
+            } else if (props.classType === 'Tutorial-Laboratory') {
+                shortClassType = 'tut-lab';
+            } else if (props.classType === 'Tutorial') {
+                shortClassType = 'tut';
+            } else {
+                shortClassType = props.classType;
+            }
+            
+            // Extract building code from location (e.g., "Ainsworth G03 (K-J17-G03)" → "K-J17-G03")
+            let shortLocation = props.location;
+            if (props.location.includes('(') && props.location.includes(')')) {
+                let match = props.location.match(/\(([^)]+)\)/);
+                if (match) {
+                    shortLocation = match[1]; // Use the full code in brackets
+                }
+            } else if (props.location === 'Online (ONLINE)') {
+                shortLocation = 'Online';
+            }
+            
             return {
               html: `
-                <div>
-                  <b>${arg.event.title}</b><br>
-                  <i>${classType}</i><br>
-                  <span>${location}</span>
+                <div class="fc-event-content">
+                  <div class="event-header">
+                    <span class="type-icon">${typeIcon}</span>
+                    <span class="event-title">${arg.event.title} ${shortClassType}</span>
+                  </div>
+                  <div class="event-details">
+                    <div class="detail-row">
+                      <span class="detail-label">📍</span>
+                      <span class="detail-value location">${shortLocation}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">●</span>
+                      <span class="detail-value status" style="color: ${statusColor}">${props.status}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">👥</span>
+                      <span class="detail-value">${props.capacity}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">📅</span>
+                      <span class="detail-value weeks">${props.weeks}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">${modeIcon}</span>
+                      <span class="detail-value mode">${props.mode}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">🕐</span>
+                      <span class="detail-value time">${props.time}</span>
+                    </div>
+                  </div>
                 </div>
               `
             };
@@ -86,13 +141,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-
-    calendar.addEvent({
-        title: 'Event from app.js',
-        start: '2025-09-29T12:30:00-05:00',
-        end: '2025-09-29T12:30:00-03:00'
-    });
-
     const classesData = await loadClasses();
     const classes = classesData.classes;
     
@@ -102,13 +150,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (classItem.activity === "Lecture") {
             classItem.times.forEach(time => {
                 calendar.addEvent({
-                    title: classItem.class_id,
+                    title: classItem.section,
                     startTime: time.time.split(' - ')[0],
                     endTime: time.time.split(' - ')[1],
                     daysOfWeek: [dayToNumber(time.day)],
                     extendedProps: {
                         location: time.location,
                         classType: classItem.activity,
+                        time: time.time,
+                        status: classItem.status,
+                        capacity: classItem.course_enrolment,
+                        weeks: time.weeks,
+                        mode: classItem.mode
                     }
                 });
             })
@@ -123,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             calendar.addEvent({
-                title: classItem.class_id,
+                title: classItem.section,
                 startTime: startTime,
                 endTime: endTime,
                 daysOfWeek: [dayToNumber(classItem.times[0].day)],
@@ -133,7 +186,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     status: classItem.status,
                     capacity: classItem.course_enrolment,
                     weeks: classItem.times[0].weeks,
-                    mode: classItem.mode
+                    mode: classItem.mode,
+                    time: classItem.times[0].time
                 }
             });
         }

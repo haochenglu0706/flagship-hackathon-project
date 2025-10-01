@@ -16,7 +16,7 @@ const query = `
     classes(
       where: { course: { course_code: { _eq: $course_code } }, term: { _eq: "T3" }, year: { _eq: "2025" }, activity: {_neq: "Course Enrolment"} }
     ) {
-      class_id
+      section
       mode
       status
       year
