@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         weekends: false,
         eventMaxStack: 3,
         slotEventOverlap: false,
-        initialDate: '2025-09-29',
+        initialDate: '2025-08-25',
 
         eventContent: function(arg) {
             let props = arg.event.extendedProps;
@@ -55,51 +55,101 @@ document.addEventListener('DOMContentLoaded', async function () {
             
             // Extract building code from location (e.g., "Ainsworth G03 (K-J17-G03)" → "K-J17-G03")
             let shortLocation = props.location;
+            let building;
+            let room;
             if (props.location.includes('(') && props.location.includes(')')) {
                 let match = props.location.match(/\(([^)]+)\)/);
                 if (match) {
                     shortLocation = match[1]; // Use the full code in brackets
+                    building = shortLocation.slice(0,5)
+                    room = shortLocation
+                    if (building === 'Quad ') {
+                        building = 'K-E15'
+                        let temp = shortLocation.slice(shortLocation.length -5, shortLocation.length - 1)
+                        temp = temp.trim()
+                        room = 'K-E15' + '-' + temp
+                    } 
                 }
             } else if (props.location === 'Online (ONLINE)') {
                 shortLocation = 'Online';
+
             }
-            
-            return {
-              html: `
-                <div class="fc-event-content">
-                  <div class="event-header">
-                    <span class="type-icon">${typeIcon}</span>
-                    <span class="event-title">${arg.event.title} ${shortClassType}</span>
-                  </div>
-                  <div class="event-details">
-                    <div class="detail-row">
-                      <span class="detail-label">📍</span>
-                      <span class="detail-value location">${shortLocation}</span>
+            if (shortLocation === 'ONLINE') {
+                return {
+                  html: `
+                    <div class="fc-event-content">
+                      <div class="event-header">
+                        <span class="type-icon">${typeIcon}</span>
+                        <span class="event-title">${arg.event.title} ${shortClassType}</span>
+                      </div>
+                      <div class="event-details">
+                        <div class="detail-row">
+                          <span class="detail-label">📍</span>
+                          <span class="detail-value location">${shortLocation}</span>
+                        </div>
+                        <div class="detail-row">
+                          <span class="detail-label">●</span>
+                          <span class="detail-value status" style="color: ${statusColor}">${props.status}</span>
+                        </div>
+                        <div class="detail-row">
+                          <span class="detail-label">👥</span>
+                          <span class="detail-value">${props.capacity}</span>
+                        </div>
+                        <div class="detail-row">
+                          <span class="detail-label">📅</span>
+                          <span class="detail-value weeks">${props.weeks}</span>
+                        </div>
+                        <div class="detail-row">
+                          <span class="detail-label">${modeIcon}</span>
+                          <span class="detail-value mode">${props.mode}</span>
+                        </div>
+                        <div class="detail-row">
+                          <span class="detail-label">🕐</span>
+                          <span class="detail-value time">${props.time}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div class="detail-row">
-                      <span class="detail-label">●</span>
-                      <span class="detail-value status" style="color: ${statusColor}">${props.status}</span>
-                    </div>
-                    <div class="detail-row">
-                      <span class="detail-label">👥</span>
-                      <span class="detail-value">${props.capacity}</span>
-                    </div>
-                    <div class="detail-row">
-                      <span class="detail-label">📅</span>
-                      <span class="detail-value weeks">${props.weeks}</span>
-                    </div>
-                    <div class="detail-row">
-                      <span class="detail-label">${modeIcon}</span>
-                      <span class="detail-value mode">${props.mode}</span>
-                    </div>
-                    <div class="detail-row">
-                      <span class="detail-label">🕐</span>
-                      <span class="detail-value time">${props.time}</span>
-                    </div>
-                  </div>
-                </div>
-              `
-            };
+                  `
+                };
+            }
+            else {
+                return {
+                    html: `
+                      <div class="fc-event-content">
+                        <div class="event-header">
+                          <span class="type-icon">${typeIcon}</span>
+                          <span class="event-title">${arg.event.title} ${shortClassType}</span>
+                        </div>
+                        <div class="event-details">
+                          <div class="detail-row">
+                            <span class="detail-label">📍</span>
+                            <span class="detail-value location" href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}">${shortLocation}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="detail-label">●</span>
+                            <span class="detail-value status" style="color: ${statusColor}">${props.status}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="detail-label">👥</span>
+                            <span class="detail-value">${props.capacity}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="detail-label">📅</span>
+                            <span class="detail-value weeks">${props.weeks}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="detail-label">${modeIcon}</span>
+                            <span class="detail-value mode">${props.mode}</span>
+                          </div>
+                          <div class="detail-row">
+                            <span class="detail-label">🕐</span>
+                            <span class="detail-value time">${props.time}</span>
+                          </div>
+                        </div>
+                      </div>
+                    `
+                  };
+            }
           },
         // navigate by single days
         headerToolbar: {
@@ -111,8 +161,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             prevDay: {
                 text: 'Prev',
                 click: function () {
-                    if (String(calendar.getDate()).split(' ')[0] == "Mon") {
-                        calendar.incrementDate({ days: -3 });
+
+                    if (String(calendar.getDate()).split(' ')[0] === "Mon") {
+                        calendar.incrementDate({ days: 4 });
                     } else {
                         calendar.incrementDate({ days: -1 });
                     }
@@ -121,8 +172,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             nextDay: {
                 text: 'Next',
                 click: function () {
-                    if (String(calendar.getDate()).split(' ')[0] == "Fri") {
-                        calendar.incrementDate({ days: 3 });
+                    if (String(calendar.getDate()).split(' ')[0] === "Fri") {
+                        calendar.incrementDate({ days: -4 });
                     } else {
                         calendar.incrementDate({ days: 1 });
                     }
@@ -174,7 +225,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Determine start and end times based on the logic you wanted
         let colour;
         let ratio = eval(classItem.course_enrolment);
-        console.log(ratio === 1)
 
 
         if (ratio === 1) {
