@@ -208,3 +208,7 @@ body {
 .fc-popover-header {
   background-color: var(--accent-color) !important;
 }
+
+.fc-day-today {
+  /* background-color: inherit !important; */
+}

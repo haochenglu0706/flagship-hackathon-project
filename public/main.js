@@ -40,7 +40,7 @@ input.onfocus = function(){
 }
 
 btn.onclick = function(){
-  let pattern = /[A-Za-z]{4}[0-9]{4}$/
+  let pattern = /^[A-Za-z]{4}[0-9]{4}$/
   if(!input.value.match(pattern)){
     // alert("Can't find the course!")
     input.value = "Not a valid course!";

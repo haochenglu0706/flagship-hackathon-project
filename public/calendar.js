@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let btn = document.getElementById("load-classes-btn");
     let input = document.getElementById("course-code");
     btn.onclick = function(){
-        let pattern = /[A-Za-z]{4}[0-9]{4}$/
+        let pattern = /^[A-Za-z]{4}[0-9]{4}$/
         if(!input.value.match(pattern)){
             // alert("Can't find the course!")
             input.value = "Not a valid course!";
@@ -110,7 +110,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             prevDay: {
                 text: 'Prev',
                 click: function () {
+                    let temp = calendar
                     calendar.incrementDate({ days: -1 });
+                    console.log(calendar === temp)
+
                 }
             },
             nextDay: {
