@@ -35,22 +35,67 @@ document.addEventListener('DOMContentLoaded', async function () {
         slotEventOverlap: false,
 
         eventContent: function(arg) {
-            // arg.event gives you the event objec
             let props = arg.event.extendedProps;
-            let location = arg.event.extendedProps.location;
-            let classType = arg.event.extendedProps.classType;
-        
+            let statusColor = props.status === 'Open' ? '#4ade80' : '#f87171';
+            let modeIcon = props.mode === 'Online' ? '🌐' : '🏫';
+            let typeIcon = props.classType === 'Lecture' ? '📚' : props.classType === 'Tutorial' ? '👥' : '🔬';
+            
+            // Simplify class type names
+            let shortClassType = '';
+            if (props.classType === 'Lecture') {
+                shortClassType = 'lec';
+            } else if (props.classType === 'Tutorial-Laboratory') {
+                shortClassType = 'tut-lab';
+            } else if (props.classType === 'Tutorial') {
+                shortClassType = 'tut';
+            } else {
+                shortClassType = props.classType;
+            }
+            
+            // Extract building code from location (e.g., "Ainsworth G03 (K-J17-G03)" → "K-J17-G03")
+            let shortLocation = props.location;
+            if (props.location.includes('(') && props.location.includes(')')) {
+                let match = props.location.match(/\(([^)]+)\)/);
+                if (match) {
+                    shortLocation = match[1]; // Use the full code in brackets
+                }
+            } else if (props.location === 'Online (ONLINE)') {
+                shortLocation = 'Online';
+            }
+            
             return {
               html: `
-                <div>
-                <b>${arg.event.title}</b><br>
-                <span>${props.classType}</span><br>
-                <span>${props.location}</span><br>
-                <span>Status: ${props.status}</span><br>
-                <span>Capacity: ${props.capacity}</span><br>
-                <span>Weeks: ${props.weeks}</span><br>
-                <span>Mode: ${props.mode}</span><br>
-                <span>Time: ${props.time}</span>
+                <div class="fc-event-content">
+                  <div class="event-header">
+                    <span class="type-icon">${typeIcon}</span>
+                    <span class="event-title">${arg.event.title} ${shortClassType}</span>
+                  </div>
+                  <div class="event-details">
+                    <div class="detail-row">
+                      <span class="detail-label">📍</span>
+                      <span class="detail-value location">${shortLocation}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">●</span>
+                      <span class="detail-value status" style="color: ${statusColor}">${props.status}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">👥</span>
+                      <span class="detail-value">${props.capacity}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">📅</span>
+                      <span class="detail-value weeks">${props.weeks}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">${modeIcon}</span>
+                      <span class="detail-value mode">${props.mode}</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">🕐</span>
+                      <span class="detail-value time">${props.time}</span>
+                    </div>
+                  </div>
                 </div>
               `
             };
@@ -94,13 +139,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 dayHeaderFormat: { weekday: 'long' }
             }
         }
-    });
-
-
-    calendar.addEvent({
-        title: 'Event from app.js',
-        start: '2025-09-29T12:30:00-05:00',
-        end: '2025-09-29T12:30:00-03:00'
     });
 
     const classesData = await loadClasses();
