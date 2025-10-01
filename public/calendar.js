@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let btn = document.getElementById("load-classes-btn");
     let input = document.getElementById("course-code");
     btn.onclick = function(){
-        let pattern = /[A-Za-z]{4}[0-9]{4}$/
+        let pattern = /^[A-Za-z]{4}[0-9]{4}$/
         if(!input.value.match(pattern)){
             // alert("Can't find the course!")
             input.value = "Not a valid course!";
@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         weekends: false,
         eventMaxStack: 3,
         slotEventOverlap: false,
+        initialDate: '2025-09-29',
 
         eventContent: function(arg) {
             let props = arg.event.extendedProps;
@@ -110,13 +111,21 @@ document.addEventListener('DOMContentLoaded', async function () {
             prevDay: {
                 text: 'Prev',
                 click: function () {
-                    calendar.incrementDate({ days: -1 });
+                    if (String(calendar.getDate()).split(' ')[0] == "Mon") {
+                        calendar.incrementDate({ days: -3 });
+                    } else {
+                        calendar.incrementDate({ days: -1 });
+                    }
                 }
             },
             nextDay: {
                 text: 'Next',
                 click: function () {
-                    calendar.incrementDate({ days: 1 });
+                    if (String(calendar.getDate()).split(' ')[0] == "Fri") {
+                        calendar.incrementDate({ days: 3 });
+                    } else {
+                        calendar.incrementDate({ days: 1 });
+                    }
                 }
             }
         },
@@ -129,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         dateClick: function (info) {
             selectedDate = info.date;
             updateHighlight(selectedDate);
+            calendar.gotoDate(selectedDate);
         },
         dayHeaderFormat: { weekday: 'long' },
         views: {
