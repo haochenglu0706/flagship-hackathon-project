@@ -19,6 +19,10 @@
   
 }   
 
+body {
+  background-color: var(--primary-color);
+}
+
 .fc .fc-button-primary{
     background-color: var(--secondary-color);
     color: var(--primary-color);
@@ -29,10 +33,64 @@
 }
 
 #calendar .fc-view-harness{
-    width: 65%;
+    width: 80%;
     margin: auto;
+    margin-bottom: 10px;
 }
 
 #calendar{
-    color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+
+#calendar table, th, td{
+  border-color: var(--secondary-color) !important;
+}
+
+.fc-toolbar-chunk:first-child {
+  /* display: none; */
+  position: fixed;
+  top: 10px;
+  left: 25px;
+}
+
+/* hide all-day events */
+.fc-scrollgrid-section-body:first-child, .fc-scrollgrid-section:nth-child(2){
+  display: none;
+} 
+
+#course-code {
+  width: 250px;
+  height: auto;
+  font-size: 17px;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--secondary-color);
+  padding: 10px;
+  color: var(--primary-color);
+}
+
+#course-code::placeholder{
+  color: var(--accent-color);
+}
+
+#load-classes-btn {
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+  padding: 10px;
+}
+
+#load-classes-btn:hover {
+  background-color: var(--secondary-color);
+  color: var(--accent-color);
+}
+
+.fc-toolbar-chunk:nth-child(3) {
+  position: fixed;
+  right: 25px;
+  top: 10px;
 }

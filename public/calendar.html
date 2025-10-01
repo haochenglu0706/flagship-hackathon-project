@@ -13,9 +13,15 @@
     <form id="course-search">
       <center>
         <input id="course-code" type="text" placeholder="e.g. COMP1511" aria-label="Course code" />
-        <button type="submit">Load classes</button>
+        <button id="load-classes-btn" type="submit">Load</button>
       </center>
     </form>
     <div id="calendar"></div>
+    <script>
+      let today = document.getElementsByClassName("fc-day-today");
+      for (let i = 0; i < today.length; i++) {
+        today[i].classList.remove("fc-day-today");
+      }
+    </script>
   </body>
 </html>
