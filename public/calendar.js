@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     var selectedDate = null;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
+        slotMinTime: '08:00:00',
+        weekends: false,
 
         eventContent: function(arg) {
             // arg.event gives you the event object
