@@ -21,6 +21,7 @@ const query = `
       status
       year
       activity
+      course_enrolment
       course { course_code }
       times { weeks location time day}
     }

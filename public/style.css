@@ -12,6 +12,7 @@
 
 body{
   background-color: var(--primary-color);
+  overflow: hidden;
 }
 
 h1{
