@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     calendar.render();
+    
+    // Load classes from URL parameter
+    loadClasses();
 });
 
 function updateHighlight(date) {
@@ -68,4 +71,22 @@ function toYmd(date) {
     var m = String(date.getMonth() + 1).padStart(2, '0');
     var d = String(date.getDate()).padStart(2, '0');
     return y + '-' + m + '-' + d;
+}
+
+async function loadClasses() {
+    const params = new URLSearchParams(window.location.search);
+    const courseid = params.get('courseid');
+
+    if (!courseid) {
+        console.error('No courseid provided');
+        return;
+    }
+
+    const res = await fetch(`/api/classes/${courseid}`);
+    if (!res.ok) {
+        console.error('Failed to load classes');
+        return;
+    }
+    const data = await res.json();
+    console.log(data);
 }
