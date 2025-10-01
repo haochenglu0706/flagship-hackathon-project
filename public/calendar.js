@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', async function () {
+
+    // input bar
+    let btn = document.getElementById("load-classes-btn");
+    let input = document.getElementById("course-code");
+    btn.onclick = function(){
+        let pattern = /[A-Za-z]{4}[0-9]{4}$/
+        if(!input.value.match(pattern)){
+            // alert("Can't find the course!")
+            input.value = "Not a valid course!";
+            input.style.color = "#ff7878ff";
+            return;
+        }
+        window.location.href = '/calendar?courseid=' + input.value.toUpperCase();
+    }   
+
+    input.onfocus = function(){
+    input.value = ''
+    input.style.color = 'var(--primary-color)'
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+        btn.click();
+        }
+    });
+    }
+
+    // calendar
     var calendarEl = document.getElementById('calendar');
     var selectedDate = null;
     var calendar = new FullCalendar.Calendar(calendarEl, {

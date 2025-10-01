@@ -68,6 +68,7 @@ body {
   background-color: var(--secondary-color);
   padding: 10px;
   color: var(--primary-color);
+  text-transform: uppercase;
 }
 
 #course-code::placeholder{
