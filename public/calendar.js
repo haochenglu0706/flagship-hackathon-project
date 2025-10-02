@@ -31,9 +31,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         initialView: 'timeGridWeek',
         slotMinTime: '08:00:00',
         weekends: false,
-        eventMaxStack: 3,
+        eventMaxStack: 4,
         slotEventOverlap: false,
         initialDate: '2025-08-25',
+        eventOrder: function(a, b) {
+            // First sort by priority (Open classes first)
+            const priorityA = a.extendedProps.priority || 999;
+            const priorityB = b.extendedProps.priority || 999;
+            if (priorityA !== priorityB) {
+                return priorityA - priorityB;
+            }
+            // Then sort by title for consistent ordering
+            return a.title.localeCompare(b.title);
+        },
 
         eventContent: function(arg) {
             let props = arg.event.extendedProps;
@@ -209,7 +219,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const classesData = await loadClasses();
     const classes = classesData.classes;
-
+    const len = classes.length;
+    const sortedArray = new Array(len);
+    if (len > 0) {
+        let i = 0;
+        let j = 0;
+        let k = len - 1;
+        while (j <= k) {
+            if (classes[i].status === "Open") {
+                sortedArray[j] = classes[i];
+                j++;
+            } else {
+                sortedArray[k] = classes[i];
+                k--;
+            }
+            i++;
+        }
+    }
     // output  = []
 
     // for (let i = 0; i < classes.length; i ++) {
@@ -258,20 +284,26 @@ document.addEventListener('DOMContentLoaded', async function () {
                         status: classItem.status,
                         capacity: classItem.course_enrolment,
                         weeks: time.weeks,
-                        mode: classItem.mode
+                        mode: classItem.mode,
+                        priority: classItem.status === 'Open' ? 1 : 2
                     }
                 });
             })
-        } else {
+        } else if (classItem.activity === "Tutorial-Laboratory") {
             let startTime, endTime;
             if ((classItem.times.length > 1) && (classItem.activity !== "Lecture")) {
                 startTime = classItem.times[0].time.split(' - ')[0];
                 endTime = classItem.times[1].time.split(' - ')[1];
+                console.log(classItem.section + " " + endTime);
             } else {
                 startTime = classItem.times[0].time.split(' - ')[0]; // Extract start time
                 endTime = classItem.times[0].time.split(' - ')[1];   // Extract end time
             }
-
+            
+            // Create the correct time string for display
+            let displayTime = startTime + ' - ' + endTime;
+            
+            console.log(classItem.section + " " + endTime);
             calendar.addEvent({
                 title: classItem.section,
                 startTime: startTime,
@@ -285,9 +317,53 @@ document.addEventListener('DOMContentLoaded', async function () {
                     capacity: classItem.course_enrolment,
                     weeks: classItem.times[0].weeks,
                     mode: classItem.mode,
-                    time: classItem.times[0].time
+                    time: displayTime,
+                    priority: classItem.status === 'Open' ? 1 : 2
                 }
             });
+        } else {
+            if (classItem.times.length > 1) {
+                classItem.times.forEach(time => {
+                    calendar.addEvent({
+                        title: classItem.section,
+                        startTime: time.time.split(' - ')[0],
+                        endTime: time.time.split(' - ')[1],
+                        daysOfWeek: [dayToNumber(time.day)],
+                        backgroundColor: colour,
+                        extendedProps: {
+                            location: time.location,
+                            classType: classItem.activity,
+                            status: classItem.status,
+                            capacity: classItem.course_enrolment,
+                            weeks: time.weeks,
+                            mode: classItem.mode,
+                            time: times.time,
+                            priority: classItem.status === 'Open' ? 1 : 2
+                        }
+                    });
+                })
+            } else {
+                if (classItem.times.length > 0) {
+                    console.log(classItem.mode);
+                    calendar.addEvent({
+                        title: classItem.section,
+                        startTime: classItem.times[0].time.split(' - ')[0],
+                        endTime: classItem.times[0].time.split(' - ')[1],
+                        daysOfWeek: [dayToNumber(classItem.times[0].day)],
+                        backgroundColor: colour,
+                        extendedProps: {
+                            location: classItem.times[0].location,
+                            classType: classItem.activity,
+                            status: classItem.status,
+                            capacity: classItem.course_enrolment,
+                            weeks: classItem.times[0].weeks,
+                            mode: classItem.mode,
+                            time: classItem.times[0].time,
+                            priority: classItem.status === 'Open' ? 1 : 2
+                        }
+                    });
+                }
+            }
         }
         
     });
