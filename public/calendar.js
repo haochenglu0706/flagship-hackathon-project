@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             else {
                 return {
                     html: `
-                    <a  href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}">
+                    <a  href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}" target="_blank">
                       <div class="fc-event-content">
                         <div class="event-header">
                           <span class="type-icon">${typeIcon}</span>
