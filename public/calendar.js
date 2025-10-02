@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         eventMaxStack: 4,
         slotEventOverlap: false,
         initialDate: '2025-08-25',
+        moreLinkClick: 'popover',
+        
+        // 👇 controls the text in the popover header
+        dayPopoverFormat: { weekday: 'long' },
         eventOrder: function(a, b) {
             // First sort by priority (Open classes first)
             const priorityA = a.extendedProps.priority || 999;
