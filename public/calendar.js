@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     room = shortLocation
                     if (building === 'Quad ') {
                         building = 'K-E15'
-                        let temp = shortLocation.slice(shortLocation.length -5, shortLocation.length - 1)
+                        let temp = shortLocation.slice(shortLocation.length -5, shortLocation.length)
                         temp = temp.trim()
                         room = 'K-E15' + '-' + temp
                     } 
@@ -210,19 +210,20 @@ document.addEventListener('DOMContentLoaded', async function () {
     const classesData = await loadClasses();
     const classes = classesData.classes;
 
-    // output  = []
+    output  = []
 
-    // for (let i = 0; i < classes.length; i ++) {
-    //     if (classes[i].status === 'Open' ) {
-    //         new_output =  output.splice(0, classes[i])
-    //         output = new_output
-    //     }
-    //     else {
-    //         output.push(classes[i])
-    // //     }
-    // // }
+    for (let i = 0; i < classes.length; i ++) {
+        if (classes[i].status === 'Open' ) {
+            new_output =  output.splice(0, classes[i])
+            output = new_output
+        }
+        else {
+            output.push(classes[i])
+        }
+    }
 
-    // console.log(output)
+    console.log(typeof(classes))
+    console.log(typeof(output))
 
     
     // Add events for each class and each time slot
@@ -350,7 +351,7 @@ async function loadClasses() {
     if (data.classes.length === 0) {
         console.error("Course not found");
     }
-    console.log(data);
-    console.log(data.classes.length);
+    // console.log(data);
+    // console.log(data.classes.length);
     return data;
 }
