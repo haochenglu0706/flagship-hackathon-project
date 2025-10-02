@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         let pattern = /^[A-Za-z]{4}[0-9]{4}$/
         if(!input.value.match(pattern)){
             // alert("Can't find the course!")
-            input.value = "Not a valid course!";
-            input.style.color = "#ff7878ff";
+            input.style.animation = "shake 0.2s ease-in-out 0s 2";
+            setTimeout(() => {
+            input.style.animation = ""
+            }, 200);
             return;
         }
         window.location.href = '/calendar?courseid=' + input.value.toUpperCase();
