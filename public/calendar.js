@@ -337,13 +337,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                             capacity: classItem.course_enrolment,
                             weeks: time.weeks,
                             mode: classItem.mode,
-                            time: classItem.times.time,
+                            time: times.time,
                             priority: classItem.status === 'Open' ? 1 : 2
                         }
                     });
                 })
             } else {
                 if (classItem.times.length > 0) {
+                    console.log(classItem.mode);
                     calendar.addEvent({
                         title: classItem.section,
                         startTime: classItem.times[0].time.split(' - ')[0],
@@ -357,7 +358,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             capacity: classItem.course_enrolment,
                             weeks: classItem.times[0].weeks,
                             mode: classItem.mode,
-                            time: classItem.times.time,
+                            time: classItem.times[0].time,
                             priority: classItem.status === 'Open' ? 1 : 2
                         }
                     });
