@@ -69,6 +69,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                         temp = temp.trim()
                         room = 'K-E15' + '-' + temp
                     } 
+                    if (building[building.length - 1] == '-') {
+                        building = building.slice(0,4)
+                    }
                 }
             } else if (props.location === 'Online (ONLINE)') {
                 shortLocation = 'Online';
@@ -115,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             else {
                 return {
                     html: `
-                    <a  href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}">
+                    <a  href="https://www.learningenvironments.unsw.edu.au/physical-spaces/${building}/${room}" target="_blank">
                       <div class="fc-event-content">
                         <div class="event-header">
                           <span class="type-icon">${typeIcon}</span>
