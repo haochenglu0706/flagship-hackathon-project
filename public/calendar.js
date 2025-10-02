@@ -69,6 +69,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                         temp = temp.trim()
                         room = 'K-E15' + '-' + temp
                     } 
+                    if (building[building.length - 1] == '-') {
+                        building = building.slice(0,4)
+                    }
                 }
             } else if (props.location === 'Online (ONLINE)') {
                 shortLocation = 'Online';
