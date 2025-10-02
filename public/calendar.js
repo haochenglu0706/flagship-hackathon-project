@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }
                 });
             })
-        } else {
+        } else if (classItem.activity === "Tutorial-Laboratory") {
             let startTime, endTime;
             if ((classItem.times.length > 1) && (classItem.activity !== "Lecture")) {
                 startTime = classItem.times[0].time.split(' - ')[0];
@@ -321,6 +321,46 @@ document.addEventListener('DOMContentLoaded', async function () {
                     priority: classItem.status === 'Open' ? 1 : 2
                 }
             });
+        } else {
+            if (classItem.times.length > 1) {
+                classItem.times.forEach(time => {
+                    calendar.addEvent({
+                        title: classItem.section,
+                        startTime: time.time.split(' - ')[0],
+                        endTime: time.time.split(' - ')[1],
+                        daysOfWeek: [dayToNumber(time.day)],
+                        backgroundColor: colour,
+                        extendedProps: {
+                            location: time.location,
+                            classType: classItem.activity,
+                            status: classItem.status,
+                            capacity: classItem.course_enrolment,
+                            weeks: time.weeks,
+                            mode: classItem.mode,
+                            priority: classItem.status === 'Open' ? 1 : 2
+                        }
+                    });
+                })
+            } else {
+                if (classItem.times.length > 0) {
+                    calendar.addEvent({
+                        title: classItem.section,
+                        startTime: classItem.times[0].time.split(' - ')[0],
+                        endTime: classItem.times[0].time.split(' - ')[1],
+                        daysOfWeek: [dayToNumber(classItem.times[0].day)],
+                        backgroundColor: colour,
+                        extendedProps: {
+                            location: classItem.times[0].location,
+                            classType: classItem.activity,
+                            status: classItem.status,
+                            capacity: classItem.course_enrolment,
+                            weeks: classItem.times[0].weeks,
+                            mode: classItem.mode,
+                            priority: classItem.status === 'Open' ? 1 : 2
+                        }
+                    });
+                }
+            }
         }
         
     });
