@@ -337,6 +337,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             capacity: classItem.course_enrolment,
                             weeks: time.weeks,
                             mode: classItem.mode,
+                            time: classItem.times.time,
                             priority: classItem.status === 'Open' ? 1 : 2
                         }
                     });
@@ -356,6 +357,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             capacity: classItem.course_enrolment,
                             weeks: classItem.times[0].weeks,
                             mode: classItem.mode,
+                            time: classItem.times.time,
                             priority: classItem.status === 'Open' ? 1 : 2
                         }
                     });
